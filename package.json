@@ -13,8 +13,7 @@
     "@aws-sdk/client-bedrock-agent-runtime": "^3.862.0",
     "@aws-sdk/client-bedrock-runtime": "^3.862.0",
     "axios": "^0.25.0",
-    "mongodb": "^6.18.0",
-    "typeorm": "^0.2.25"
+    "mongodb": "^6.18.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
