@@ -8,8 +8,6 @@ import {
     RetrieveCommandInput,RetrieveAndGenerateCommand
 } from "@aws-sdk/client-bedrock-agent-runtime";
 import {Document} from "mongodb";
-import dotenv from "dotenv";
-dotenv.config();
 
 export async function resolveQuery(req: any) {
     try {
@@ -81,6 +79,7 @@ export async function resolveQuery(req: any) {
         };
     }
     catch(err: any) {
+        console.log("ERROR: ", err)
         return "Something Went Wrong!!";
     }
 }
