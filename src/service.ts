@@ -17,6 +17,15 @@ export async function resolveQuery(req: any, res: any) {
         let appConfig: any;
         console.log(`type - ${type}`);
         if (type == 1) {
+            if (query) {
+                return res.send({
+                    "data": [
+                        {"type": 7, "description": "Hey Oshin! Welcome to Zo Gaming Assitant"},
+                        {"type": 1, "description": `${query}`},
+                        {"type": 1, "description": "Popular Games"},
+                        {"type": 1, "description": "How to Deposit Cash"},
+                        {"type": 1, "description": "How to Withdraw"}] });
+            }
             return res.send({
                 "data": [
                     {"type": 7, "description": "Hey Oshin! Welcome to Zo Gaming Assitant"},
@@ -107,8 +116,8 @@ There are some do's and don'ts which will form the standard operating procedure 
         }
         console.log(`result: ${JSON.stringify(result)}`);
         const finalResponse = [];
-        finalResponse.push({"type": 7, "description": parsedResult.description, "deeplink": parsedResult.deeplink});
-        if(parsedResult.deeplink) {
+        finalResponse.push({"type": 7, "description": parsedResult.description});
+        if(parsedResult.deeplink && parsedResult.deeplink.includes("https://www.winzogames.com")) {
             finalResponse.push({"type": 21, "description": "Click here to play", "deeplink": parsedResult.deeplink});
         }
         return res.send({"data": finalResponse});
