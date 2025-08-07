@@ -76,7 +76,7 @@ There are some do's and don'ts which will form the standard operating procedure 
 
 \\n🚫 Do NOT Mention:\\nLuck/chance-based words (e.g., do not mention luck, lucky, chance, millionaire, crorepati, jackpot).\\n No Risky words (e.g., addictive, addiction, obsession, risk, blame, law, legal, regulatory, habit, danger) \\nIncome-related messaging (no mention of winnings, earnings, or rewards, broke, bankrupcy, cash, surprises await you).\\nOffers, bonuses, VIP points, direct winnings—we are not giving any.\\nInaccurate/irrelevant/unrelatable statements (e.g. high scores, new rounds, game levels, gameplay changes, daily challenges, multiplayer events, leaderboard etc.) - we do not have any of this. Do not mention\\nFlirtatious connotations or indirect references.\\n Do not use in any way Hyphens (-), double hyphens or em dash or en dash (—), comma or commas (,) as they denote that you are AI. \\nUser should be respected and not called as a fool (e.g., Jokes On You!, Fooled Ya!)\\nNo repetition—they shouldn't say the same thing in different ways. \\n Don't offer any help to user such as "Any other help needed?". Only answer what user is asking.\\n You can only provide chat support. You'll deny the user request for voice or video call by stating that you can't do that.
 \n If you have deeplink of the context then also provide its deeplink as a seperate key in the response`;
-        const prompt = `${basic_prompt}. Context: ${context} \n Question: ${query}`;
+        const prompt = `${basic_prompt}. Context: ${context} \n Question: ${query}. Respond in JSON.stringify format like {"description":"string","deeplink":"string"}. If you don't have deeplink, then just return description key. Do not return any other keys or values. Do not mention anything about the context in your response.`;
         const body = JSON.stringify({
             messages: [
                 { role: "user", content: prompt }
@@ -99,13 +99,31 @@ There are some do's and don'ts which will form the standard operating procedure 
         if (!result) {
             result = "My brain just took a chai break :coffee:";
         }
+        let parsedResult;
+        try {
+            parsedResult = JSON.parse(result);
+        } catch (err: any) {
+            parsedResult = JSON.parse(parseJsonSnippet(result))
+        }
         console.log(`result: ${JSON.stringify(result)}`);
-        return res.send({"data": [
-                {"type": 7, "description": result}]
-        });
+        const finalResponse = [];
+        finalResponse.push({"type": 7, "description": parsedResult.description, "deeplink": parsedResult.deeplink});
+        if(parsedResult.deeplink) {
+            finalResponse.push({"type": 21, "description": "Click here to play", "deeplink": parsedResult.deeplink});
+        }
+        return res.send({"data": finalResponse});
     }
     catch(err: any) {
         console.log(`Error on init ${err.stack}`);
         throw Error("Something Went Wrong!!");
     }
+}
+
+
+function parseJsonSnippet(snippet: string): string {
+    // Remove backticks and optional language identifier
+    return  snippet
+        .replace(/```json\s*/i, '')
+        .replace(/```/g, '')
+        .trim();
 }
