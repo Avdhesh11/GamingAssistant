@@ -9,8 +9,8 @@ app.use(express.json()); // Middleware to parse JSON bodies
 
 app.post('/resolveQuery', async (req: Request, res: Response) => {
     try {
-        const message = await resolveQuery(req);
-        res.json({ message });
+        return await resolveQuery(req, res);
+        // res.json({ message });
     } catch (error) {
         console.error('Error in /resolveQuery:', error);
         res.status(500).json({ error: 'Something went wrong' });
