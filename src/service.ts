@@ -118,7 +118,7 @@ There are some do's and don'ts which will form the standard operating procedure 
         const finalResponse = [];
         finalResponse.push({"type": 7, "description": parsedResult.description});
         if(parsedResult.deeplink && parsedResult.deeplink.includes("https://www.winzogames.com")) {
-            finalResponse.push({"type": 21, "description": "Click here to play", "deeplink": parsedResult.deeplink});
+            finalResponse.push({"type": 21, "description": "Click here to continue", "deeplink": parsedResult.deeplink});
         }
         return res.send({"data": finalResponse});
     }
